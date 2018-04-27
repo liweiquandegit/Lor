@@ -27,24 +27,16 @@ namespace SqlMaker
             SqlCommand sqlCmd = new SqlCommand();
             StringBuilder strParams = new StringBuilder();
             object key = null;
-            object flag = null;
             foreach (PropertyInfo pi in typeof(T).GetProperties())
             {
                 if (pi.GetCustomAttribute<NotColumnAttribute>() != null)
                     continue;
                 PrimaryKeyAttribute pkAttr = pi.GetCustomAttribute<PrimaryKeyAttribute>();
-                FlagKeyAttribute fkAttr = pi.GetCustomAttribute<FlagKeyAttribute>();
                 if (pkAttr != null)
                 {
                     strParams.AppendFormat("AND {0}=@{0} ", pi.Name);
                     key = pi.GetValue(data);
                     sqlCmd.Parameters.Add(new SqlParameter("@" + pi.Name, key));
-                }
-                else if (fkAttr != null)
-                {
-                    strParams.AppendFormat("AND {0}=@{0} ", pi.Name);
-                    flag = pi.GetValue(data);
-                    sqlCmd.Parameters.Add(new SqlParameter("@" + pi.Name, flag));
                 }
             }
             strParams.Remove(strParams.Length - 1, 1);
@@ -96,11 +88,6 @@ namespace SqlMaker
             {
                 if (pi.GetCustomAttribute<NotColumnAttribute>() != null)
                     continue;
-                FlagKeyAttribute fkAttr = pi.GetCustomAttribute<FlagKeyAttribute>();
-                if (fkAttr != null)
-                {
-                    pi.SetValue(data,1);
-                }
                 else if (!data.GetTracer().Contains(pi.Name))
                 {
                     continue;
@@ -256,7 +243,6 @@ namespace SqlMaker
         public override bool Update(T data, string tran, out string message)
         {
             object key = null;
-            object flag = null;
             DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
             if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.DboName))
             {
@@ -276,16 +262,10 @@ namespace SqlMaker
                     continue;
                 object paramValue = pi.GetValue(data);
                 PrimaryKeyAttribute pkAttr = pi.GetCustomAttribute<PrimaryKeyAttribute>();
-                FlagKeyAttribute fgAttr = pi.GetCustomAttribute<FlagKeyAttribute>();
                 if (pkAttr != null)
                 {
                     strRstParam.AppendFormat(" AND {0}=@{0} ", pi.Name);
                     key = paramValue;
-                }
-                else if (fgAttr != null)
-                {
-                    strRstParam.AppendFormat(" AND {0}=@{0} ", pi.Name);
-                    flag = paramValue;
                 }
                 else if (data.GetTracer().Contains(pi.Name))
                     strColumns.AppendFormat(" {0}=@{0},", pi.Name);
@@ -300,7 +280,7 @@ namespace SqlMaker
                 return true;
             }
             strColumns.Remove(strColumns.Length - 1, 1);
-            sqlCmd.CommandText = String.Format("UPDATE {0} SET Flag = Flag+1, {1} WHERE 1=1 {2}", tnAttr.DboName, strColumns, strRstParam);
+            sqlCmd.CommandText = String.Format("UPDATE {0} SET {1} WHERE 1=1 {2}", tnAttr.DboName, strColumns, strRstParam);
             Debug(sqlCmd);
             SqlTransaction sqlTran = ((SqlTransaction)SqlProvider.GetTransaction(tran));
             if (sqlTran != null)
