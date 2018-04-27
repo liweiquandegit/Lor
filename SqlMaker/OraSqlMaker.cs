@@ -205,7 +205,6 @@ namespace SqlMaker
                 .Replace("__PARAMCODE__", ":");
             sqlCmd.Transaction = sqlTran;
             sqlCmd.Connection = sqlTran.Connection;
-            Debug(sqlCmd);
             try
             {
                 OracleDataReader reader = sqlCmd.ExecuteReader();
@@ -220,9 +219,10 @@ namespace SqlMaker
                         object val = reader[pi.Name];
                         if (val.GetType() != typeof(DBNull))
                         {
-                            pi.SetValue(item, val);
+                            pi.SetValue(item, Convert.ChangeType(val, pi.PropertyType));
                         }
                     }
+                    item.ResetTracer();
                     result.Add(item);
                 }
                 reader.Close();

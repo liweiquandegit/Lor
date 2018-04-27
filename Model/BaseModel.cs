@@ -62,5 +62,35 @@ namespace Model
                     updateTrace.Add("Creator");
             }
         }
+        public virtual void Merge<T>(T other) where T : BaseModel, new()
+        {
+            if (other.GetType() != this.GetType())
+            {
+                throw new ArgumentException("Merge对象类型必须与属性类型保持一致");
+            }
+            //string[] trace = new string[updateTrace.Count];
+            //this.updateTrace.CopyTo(trace, 0);
+            this.updateTrace.Clear();
+            //T swap = new T();
+            PropertyInfo[] properties = typeof(T).GetProperties();
+            foreach (PropertyInfo property in properties)
+            {
+                if (property.GetCustomAttribute<NotColumnAttribute>() == null)
+                {
+                    //property.SetValue(swap, property.GetValue(this));
+                    property.SetValue(this, property.GetValue(other));
+                }
+            }
+
+            //string[] trace2 = new string[trace.Length + updateTrace.Count];
+            //trace.CopyTo(trace2, 0);
+            //updateTrace.CopyTo(trace2, trace.Length);
+            //this.updateTrace.Clear();
+            //foreach (string s in trace2)
+            //{
+            //    PropertyInfo property = typeof(T).GetProperty(s);
+            //    property.SetValue(this, property.GetValue(swap));
+            //}
+        }
     }
 }
