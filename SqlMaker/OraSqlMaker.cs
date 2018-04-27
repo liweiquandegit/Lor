@@ -99,7 +99,7 @@ namespace SqlMaker
             }
             strColumns.Remove(strColumns.Length - 1, 1);
             strParams.Remove(strParams.Length - 1, 1);
-            sqlCmd.CommandText = String.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT SCOPE_IDENTITY()", tnAttr.DboName, strColumns, strParams);
+            sqlCmd.CommandText = String.Format("INSERT INTO {0}({1}) VALUES({2}) ", tnAttr.DboName, strColumns, strParams);
             OracleTransaction sqlTran = ((OracleTransaction)SqlProvider.GetTransaction(tran));
             if (sqlTran != null)
             {
@@ -108,7 +108,7 @@ namespace SqlMaker
                 Debug(sqlCmd);
                 try
                 {
-                    result = long.Parse(sqlCmd.ExecuteScalar().ToString());
+                    result =sqlCmd.ExecuteNonQuery();
                     if (result > 0)
                     {
                         message = "操作成功";
@@ -199,9 +199,9 @@ namespace SqlMaker
             }
             if (limit == null)
                 limit = new Limit();
-            string sql = "WITH _T_ AS ((SELECT TOP {1} ROW_NUMBER() OVER({2}) AS _AUTOID_, * FROM {3} WHERE 1 = 1 {5}))SELECT TOP {0} * FROM _T_ {6}  WHERE _AUTOID_ > {4}";
-            sqlCmd.CommandText = String.Format(sql, limit.Size, limit.Size + limit.Pos, ordBy.ToString(),
-                tnAttr.DboName, limit.Pos, restainStr, runInTran ? "" : "WITH(NOLOCK)")
+            string sql = "SELECT TB.* FROM (SELECT ROWNUM AS AUTOID__, T.* FROM {3} T WHERE ROWNUM < {1} {4} {2}) TB WHERE TB.AUTOID__ > {0}  ";
+            sqlCmd.CommandText = String.Format(sql, limit.Pos, limit.Size + limit.Pos, ordBy.ToString(),
+                tnAttr.DboName,  restainStr)
                 .Replace("__PARAMCODE__", ":");
             sqlCmd.Transaction = sqlTran;
             sqlCmd.Connection = sqlTran.Connection;

@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Model
 {
-    public class BaseModel
+    public abstract class BaseModel
     {
-        private string _Id;
-        private int _Flag;
-        private string _Creator;
+        protected string _Id { get; set; }
+        protected int _Flag { get; set; }
+        protected string _Creator { get; set; }
         protected IList<string> updateTrace = new List<string>();
         public string[] GetTracer()
         {
@@ -20,33 +20,47 @@ namespace Model
         {
             updateTrace.Clear();
         }
-        protected void Set(string key,object value)
-        {
-            Type typ = this.GetType();
-            PropertyInfo property = typ.GetProperty("_"+key);
-            object oldVal = property.GetValue(this);
-            if (oldVal == value)
-            {
-                return;
-            }
-            property.SetValue(this,value);
-            if (!updateTrace.Contains(key))
-                updateTrace.Add(key);
-        }
         public virtual string Id
         {
             get { return _Id; }
-            set { Set("Id", value); }
+            set
+            {
+                if (_Id == value)
+                {
+                    return;
+                }
+                _Id = value;
+                if (!updateTrace.Contains("Id"))
+                    updateTrace.Add("Id") ;
+            }
         }
         public virtual int Flag
         {
             get { return _Flag; }
-            set { Set("Flag", value); }
+            set
+            {
+                if (_Flag == value)
+                {
+                    return;
+                }
+                _Flag = value;
+                if (!updateTrace.Contains("Flag"))
+                    updateTrace.Add("Flag");
+            }
         }
         public virtual string Creator
         {
             get { return _Creator; }
-            set { Set("Creator", value); }
+            set
+            {
+                if (_Creator == value)
+                {
+                    return;
+                }
+                _Creator = value;
+                if (!updateTrace.Contains("Creator"))
+                    updateTrace.Add("Creator");
+            }
         }
     }
 }
