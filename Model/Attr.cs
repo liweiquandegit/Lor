@@ -1,15 +1,24 @@
 ﻿using System;
 namespace Model
 {
-    public class DboNameAttribute : Attribute
+    /// <summary>
+    /// Model对数据库的映射，可以是表、视图，也可以是SQL
+    /// </summary>
+    public class DboProjectionAttribute : Attribute
     {
-        public string DboName { get; private set; }
+        /// <summary>
+        /// 映射的具体表、视图或SQL
+        /// </summary>
+        public string Projection { get; private set; }
+        /// <summary>
+        /// 映射对象是否支持写操作（表=True，非表=False）
+        /// </summary>
         public bool Readonly { get; private set; }
-        public DboNameAttribute(string name,bool readOnly = false)
+        public DboProjectionAttribute(string name,bool readOnly = false)
         {
             
             //这里可以是普通的表名，也可以是连接表名（写法是(select * from a left join b on a.aid = b.bid)）
-            this.DboName = name;
+            this.Projection = name;
             this.Readonly = readOnly;
         }
     }

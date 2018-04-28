@@ -4,6 +4,9 @@ using System.Text;
 
 namespace SqlMaker
 {
+    /// <summary>
+    /// 限定条件的实例
+    /// </summary>
     public class Restrain
     {
         private Restrain() { }
@@ -27,6 +30,11 @@ namespace SqlMaker
                 }
             }
         }
+        /// <summary>
+        /// 与条件
+        /// </summary>
+        /// <param name="restrain">另一条件</param>
+        /// <returns>新的条件</returns>
         public Restrain And(Restrain restrain)
         {
             if (restrain == null)
@@ -36,7 +44,16 @@ namespace SqlMaker
         }
         public string SqlStr;
         private Dictionary<string, object> _Params = new Dictionary<string, object>();
+        /// <summary>
+        /// SQL的参数键值对
+        /// </summary>
         public Dictionary<string, object> Params { get { return _Params; } private set { _Params = value; } }
+        /// <summary>
+        /// 等于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Eq(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -47,6 +64,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} = {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 存在于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="values">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain In(string key, params object[] values)
         {
             if(String.IsNullOrWhiteSpace(key))
@@ -66,6 +89,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} IN ({1})", key, stringBuilder);
             return restrain;
         }
+        /// <summary>
+        /// 大于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Gt(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -78,6 +107,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} > {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 小于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Lt(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -90,6 +125,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} < {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 相似条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Lk(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -102,6 +143,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} LIKE {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 大于等于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Ge(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -114,6 +161,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} >= {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 小于等于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain Le(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -126,6 +179,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} <= {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 不存在条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="values">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain NotIn(string key, params object[] values)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -145,6 +204,12 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} NOT IN ({1})", key, stringBuilder);
             return restrain;
         }
+        /// <summary>
+        /// 不等于条件
+        /// </summary>
+        /// <param name="key">类型的属性</param>
+        /// <param name="value">条件值</param>
+        /// <returns>条件</returns>
         public static Restrain NotEq(string key, object value)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -157,6 +222,11 @@ namespace SqlMaker
             restrain.SqlStr = String.Format("AND {0} != {1}", key, paramCode);
             return restrain;
         }
+        /// <summary>
+        /// 非条件
+        /// </summary>
+        /// <param name="restrain">条件</param>
+        /// <returns>新的条件</returns>
         public static Restrain Not(Restrain restrain)
         {
             if (restrain == null)
@@ -166,6 +236,12 @@ namespace SqlMaker
             _restrain.SqlStr = String.Format("AND NOT (1=1 {0})", restrain.SqlStr);
             return _restrain;
         }
+        /// <summary>
+        /// 或条件
+        /// </summary>
+        /// <param name="restrain1">条件1</param>
+        /// <param name="restrain2">条件2</param>
+        /// <returns>新的条件</returns>
         public static Restrain Or(Restrain restrain1, Restrain restrain2)
         {
             if (restrain1 == null || restrain2 == null)
@@ -182,6 +258,12 @@ namespace SqlMaker
             _restrain.SqlStr = String.Format("AND (1=1 {0}) OR (1=1 {1})", restrain1.SqlStr, restrain2.SqlStr);
             return _restrain;
         }
+        /// <summary>
+        /// 与条件
+        /// </summary>
+        /// <param name="restrain1">条件1</param>
+        /// <param name="restrain2">条件2</param>
+        /// <returns>新的条件</returns>
         public static Restrain And(Restrain restrain1, Restrain restrain2)
         {
             if (restrain1 == null || restrain2 == null)

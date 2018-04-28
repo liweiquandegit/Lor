@@ -10,12 +10,19 @@ using System.Data.OracleClient;
 
 namespace SqlMaker
 {
+    /// <summary>
+    /// 提供数据库操作的帮助类
+    /// </summary>
     public static class SqlProvider
     {
         static SqlProvider()
         {
             bool result = ThreadPool.QueueUserWorkItem(KillTransaction);
         }
+        /// <summary>
+        /// 获得数据连接实例
+        /// </summary>
+        /// <returns>数据连接实例</returns>
         public static DbConnection GetConnection()
         {
             DbConnection connection;
@@ -34,6 +41,10 @@ namespace SqlMaker
             connection.ConnectionString = Variables.ConnStr;
             return connection;
         }
+        /// <summary>
+        /// 创建事务
+        /// </summary>
+        /// <returns>事务号</returns>
         public static string CreateTransaction()
         {
             DbConnection connection = GetConnection();
@@ -52,6 +63,11 @@ namespace SqlMaker
             }
             return key;
         }
+        /// <summary>
+        /// 获取事务实例
+        /// </summary>
+        /// <param name="key">事务号</param>
+        /// <returns>事务实例</returns>
         public static DbTransaction GetTransaction(string key)
         {
             if (String.IsNullOrWhiteSpace(key))
@@ -66,6 +82,11 @@ namespace SqlMaker
             }
             return null;
         }
+        /// <summary>
+        /// 关闭事务
+        /// </summary>
+        /// <param name="key">事务号</param>
+        /// <param name="commit">True=提交；False=回滚</param>
         public static void CloseTransaction(string key, bool commit)
         {
             DbTransaction tran = GetTransaction(key);
@@ -85,6 +106,11 @@ namespace SqlMaker
             {
             }
         }
+        /// <summary>
+        /// 获取数据库操作的实例
+        /// </summary>
+        /// <typeparam name="T">对象的类型</typeparam>
+        /// <returns>数据库操作实例</returns>
         public static SqlMaker<T> GetDbInstance<T>() where T : BaseModel, new()
         {
             switch (Variables.DbType)

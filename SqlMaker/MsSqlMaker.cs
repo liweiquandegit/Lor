@@ -12,8 +12,8 @@ namespace SqlMaker
     {
         protected override bool _Delete(T data, string tran, out string message)
         {
-            DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
-            if(tnAttr==null||String.IsNullOrWhiteSpace(tnAttr.DboName))
+            DboProjectionAttribute tnAttr = typeof(T).GetCustomAttribute<DboProjectionAttribute>();
+            if(tnAttr==null||String.IsNullOrWhiteSpace(tnAttr.Projection))
             {
                 throw new Exception(String.Format("对象{0}没有设置表映射关系",typeof(T).Name));
             }
@@ -39,7 +39,7 @@ namespace SqlMaker
                 }
             }
             strParams.Remove(strParams.Length - 1, 1);
-            sqlCmd.CommandText = String.Format("DELETE FROM {0} WHERE 1=1 {1}", tnAttr.DboName, strParams);
+            sqlCmd.CommandText = String.Format("DELETE FROM {0} WHERE 1=1 {1}", tnAttr.Projection, strParams);
             Debug(sqlCmd);
             SqlTransaction sqlTran = ((SqlTransaction) SqlProvider.GetTransaction(tran));
             if (sqlTran != null)
@@ -70,8 +70,8 @@ namespace SqlMaker
         protected override bool _Insert(T data, string tran, out string message)
         {
 
-            DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
-            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.DboName))
+            DboProjectionAttribute tnAttr = typeof(T).GetCustomAttribute<DboProjectionAttribute>();
+            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.Projection))
             {
                 throw new Exception(String.Format("对象{0}没有设置表映射关系", typeof(T).Name));
             }
@@ -98,7 +98,7 @@ namespace SqlMaker
             }
             strColumns.Remove(strColumns.Length - 1, 1);
             strParams.Remove(strParams.Length - 1, 1);
-            sqlCmd.CommandText = String.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT SCOPE_IDENTITY()", tnAttr.DboName, strColumns, strParams);
+            sqlCmd.CommandText = String.Format("INSERT INTO {0}({1}) VALUES({2}) SELECT SCOPE_IDENTITY()", tnAttr.Projection, strColumns, strParams);
             SqlTransaction sqlTran = ((SqlTransaction)SqlProvider.GetTransaction(tran));
             if (sqlTran != null)
             {
@@ -132,8 +132,8 @@ namespace SqlMaker
         }
         public override IList<T> Select(string tran, IList<OrderBy> orders, Limit limit, out string message, params Restrain[] restrain )
         {
-            DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
-            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.DboName))
+            DboProjectionAttribute tnAttr = typeof(T).GetCustomAttribute<DboProjectionAttribute>();
+            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.Projection))
             {
                 throw new Exception(String.Format("对象{0}没有设置表映射关系", typeof(T).Name));
             }
@@ -198,7 +198,7 @@ namespace SqlMaker
                 limit = new Limit();
             string sql = "WITH _T_ AS ((SELECT TOP {1} ROW_NUMBER() OVER({2}) AS _AUTOID_, * FROM {3} WHERE 1 = 1 {5}))SELECT TOP {0} * FROM _T_ {6}  WHERE _AUTOID_ > {4}";
             sqlCmd.CommandText = String.Format(sql, limit.Size, limit.Size + limit.Pos, ordBy.ToString(),
-                tnAttr.DboName, limit.Pos, restainStr,runInTran?"":"WITH(NOLOCK)")
+                tnAttr.Projection, limit.Pos, restainStr,runInTran?"":"WITH(NOLOCK)")
                 .Replace("__PARAMCODE__", "@");
             sqlCmd.Transaction = sqlTran;
             sqlCmd.Connection = sqlTran.Connection;
@@ -240,8 +240,8 @@ namespace SqlMaker
         protected override bool _Update(T data, string tran, out string message)
         {
             object key = null;
-            DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
-            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.DboName))
+            DboProjectionAttribute tnAttr = typeof(T).GetCustomAttribute<DboProjectionAttribute>();
+            if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.Projection))
             {
                 throw new Exception(String.Format("对象{0}没有设置表映射关系", typeof(T).Name));
             }
@@ -277,7 +277,7 @@ namespace SqlMaker
                 return true;
             }
             strColumns.Remove(strColumns.Length - 1, 1);
-            sqlCmd.CommandText = String.Format("UPDATE {0} SET {1} WHERE 1=1 {2}", tnAttr.DboName, strColumns, strRstParam);
+            sqlCmd.CommandText = String.Format("UPDATE {0} SET {1} WHERE 1=1 {2}", tnAttr.Projection, strColumns, strRstParam);
             Debug(sqlCmd);
             SqlTransaction sqlTran = ((SqlTransaction)SqlProvider.GetTransaction(tran));
             if (sqlTran != null)

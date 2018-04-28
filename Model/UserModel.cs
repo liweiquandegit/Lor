@@ -2,7 +2,8 @@
 
 namespace Model
 {
-    [DboName("USERMODEL")]
+    //本实例演示一般表的映射
+    [DboProjection("USERMODEL")]
     public class UserModel:BaseModel
     {
         protected string _Code;

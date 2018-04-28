@@ -9,17 +9,27 @@ namespace Model
         protected string _Id { get; set; }
         protected int _Flag { get; set; }
         protected string _Creator { get; set; }
+        /// <summary>
+        /// 跟踪对象被更改的属性，用于辅助生成Insert、Update语句
+        /// </summary>
         protected IList<string> updateTrace = new List<string>();
+        /// <summary>
+        /// 获取对象被更改过的属性
+        /// </summary>
         public string[] GetTracer()
         {
             string[] result = new string[updateTrace.Count];
             updateTrace.CopyTo(result,0);
             return result;
         }
+        /// <summary>
+        /// 重置变更记录跟踪器
+        /// </summary>
         public void ResetTracer()
         {
             updateTrace.Clear();
         }
+        [PrimaryKey]
         public virtual string Id
         {
             get { return _Id; }
@@ -34,6 +44,7 @@ namespace Model
                     updateTrace.Add("Id") ;
             }
         }
+        [FlagKey]
         public virtual int Flag
         {
             get { return _Flag; }
@@ -62,6 +73,11 @@ namespace Model
                     updateTrace.Add("Creator");
             }
         }
+        /// <summary>
+        /// 将当前编辑的对象副本合并到持久化对象
+        /// </summary>
+        /// <typeparam name="T">来源对象类型</typeparam>
+        /// <param name="other">来源对象</param>
         public virtual void Merge<T>(T other) where T : BaseModel, new()
         {
             if (other.GetType() != this.GetType())
