@@ -34,8 +34,35 @@ namespace SqlMaker
             }
         }
         public abstract IList<T> Select( string tran, IList<OrderBy> order, Limit limit, out string message,params Restrain[] restrain);
-        public abstract bool Update(T data, string tran, out string message);
-        public abstract bool Delete(T data, string tran, out string message);
-        public abstract bool Insert(T data, string tran, out string message);
+        public bool Update(T data, string tran, out string message)
+        {
+            DboNameAttribute dboName = typeof(T).GetCustomAttribute<DboNameAttribute>();
+            if (dboName == null)
+                throw new NotSupportedException();
+            if (dboName.Readonly)
+                throw new NotSupportedException();
+            return _Update(data, tran, out message);
+        }
+        public bool Delete(T data, string tran, out string message)
+        {
+            DboNameAttribute dboName = typeof(T).GetCustomAttribute<DboNameAttribute>();
+            if (dboName == null)
+                throw new NotSupportedException();
+            if (dboName.Readonly)
+                throw new NotSupportedException();
+            return _Delete(data, tran, out message);
+        }
+        public bool Insert(T data, string tran, out string message)
+        {
+            DboNameAttribute dboName = typeof(T).GetCustomAttribute<DboNameAttribute>();
+            if (dboName == null)
+                throw new NotSupportedException();
+            if (dboName.Readonly)
+                throw new NotSupportedException();
+            return _Insert(data, tran, out message);
+        }
+        protected abstract bool _Update(T data, string tran, out string message);
+        protected abstract bool _Delete(T data, string tran, out string message);
+        protected abstract bool _Insert(T data, string tran, out string message);
     }
 }

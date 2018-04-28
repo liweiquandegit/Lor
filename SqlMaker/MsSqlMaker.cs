@@ -10,7 +10,7 @@ namespace SqlMaker
 {
     public class MsSqlMaker<T> : SqlMaker<T> where T : BaseModel, new()
     {
-        public override bool Delete(T data, string tran, out string message)
+        protected override bool _Delete(T data, string tran, out string message)
         {
 
             DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
@@ -68,7 +68,7 @@ namespace SqlMaker
                 return false;
             }
         }
-        public override bool Insert(T data, string tran, out string message)
+        protected override bool _Insert(T data, string tran, out string message)
         {
 
             DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
@@ -240,7 +240,7 @@ namespace SqlMaker
 
             return result;
         }
-        public override bool Update(T data, string tran, out string message)
+        protected override bool _Update(T data, string tran, out string message)
         {
             object key = null;
             DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
