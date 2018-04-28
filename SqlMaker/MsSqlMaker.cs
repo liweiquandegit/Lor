@@ -12,7 +12,6 @@ namespace SqlMaker
     {
         protected override bool _Delete(T data, string tran, out string message)
         {
-
             DboNameAttribute tnAttr = typeof(T).GetCustomAttribute<DboNameAttribute>();
             if(tnAttr==null||String.IsNullOrWhiteSpace(tnAttr.DboName))
             {
@@ -160,7 +159,6 @@ namespace SqlMaker
             PropertyInfo[] pis = typeof(T).GetProperties();
             IEnumerable<string> piNames = from pi in pis select pi.Name;
             ordBy.Append(" ORDER BY ");
-            bool appended = false;
             if(orders!=null)
             {
                 foreach (OrderBy order in orders)
@@ -170,7 +168,6 @@ namespace SqlMaker
                     if (piNames.Contains(order.Field))
                     {
                         ordBy.AppendFormat(" {0}", order.Field);
-                        appended = true;
                     }
                     if (!order.Asc)
                         ordBy.Append(" DESC");

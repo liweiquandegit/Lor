@@ -7,7 +7,7 @@
         public Limit()
         {
             pos = 0;
-            size = 1000;
+            size = (uint)short.MaxValue;
         }
         public Limit(uint pos, uint size)
         {

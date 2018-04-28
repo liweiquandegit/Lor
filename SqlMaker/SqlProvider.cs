@@ -98,31 +98,35 @@ namespace SqlMaker
             }
 
         }
+        static object locker = new object();
         private static void KillTransaction(object arg)
         {
             while (true)
             {
                 try
                 {
-                    IList<string> transWillKilled = new List<string>();
-                    foreach (DictionaryEntry de in tranPool)
+                    lock (locker)
                     {
-                        try
+                        IList<string> transWillKilled = new List<string>();
+                        foreach (DictionaryEntry de in tranPool)
                         {
-                            TranRecord tranRecord = de.Value as TranRecord;
-                            if (tranRecord.LastCall.AddMilliseconds(Math.Abs(Variables.TRANS_TTL)) <= DateTime.Now)
+                            try
                             {
-                                tranRecord.Tran.Rollback();
-                                transWillKilled.Add(de.Key.ToString());
+                                TranRecord tranRecord = de.Value as TranRecord;
+                                if (tranRecord.LastCall.AddMilliseconds(Math.Abs(Variables.TRANS_TTL)) <= DateTime.Now)
+                                {
+                                    tranRecord.Tran.Rollback();
+                                    transWillKilled.Add(de.Key.ToString());
+                                }
+                            }
+                            catch (Exception ex)
+                            {
                             }
                         }
-                        catch (Exception ex)
+                        foreach (string dieTran in transWillKilled)
                         {
+                            tranPool.Remove(dieTran);
                         }
-                    }
-                    foreach (string dieTran in transWillKilled)
-                    {
-                        tranPool.Remove(dieTran);
                     }
                 }
                 catch (Exception ex)

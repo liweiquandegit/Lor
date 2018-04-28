@@ -160,7 +160,6 @@ namespace SqlMaker
             PropertyInfo[] pis = typeof(T).GetProperties();
             IEnumerable<string> piNames = from pi in pis select pi.Name;
             ordBy.Append(" ORDER BY ");
-            bool appended = false;
             if (orders != null)
             {
                 foreach (OrderBy order in orders)
@@ -170,7 +169,6 @@ namespace SqlMaker
                     if (piNames.Contains(order.Field))
                     {
                         ordBy.AppendFormat(" {0}", order.Field);
-                        appended = true;
                     }
                     if (!order.Asc)
                         ordBy.Append(" DESC");

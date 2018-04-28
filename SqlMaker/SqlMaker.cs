@@ -13,15 +13,6 @@ namespace SqlMaker
 {
     public abstract class SqlMaker<T> where T : BaseModel, new()
     {
-        public SqlMaker()
-        {
-        }
-        static SqlMaker()
-        {
-
-        }
-
-
         protected void Debug(DbCommand command)
         {
             if (command == null)
