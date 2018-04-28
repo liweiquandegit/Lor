@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Model
+﻿namespace Model
 {
     //本实例演示一般表的映射
     [DboProjection("USERMODEL")]

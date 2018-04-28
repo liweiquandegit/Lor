@@ -1,7 +1,5 @@
 ﻿using System;
-using Model;
 using SqlMaker;
-using System.Collections.Generic;
 
 namespace Lor
 {
