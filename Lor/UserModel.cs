@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using SqlMaker.Common;
+
+namespace Lor
 {
     //本实例演示一般表的映射
     [DboProjection("USERMODEL")]

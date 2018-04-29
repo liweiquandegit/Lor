@@ -53,16 +53,14 @@
   <ItemGroup>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserModel.cs" />
+    <Compile Include="UserWithPwdModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Model\Model.csproj">
-      <Project>{a74f1a4e-e624-42d9-8a7f-5f2851a7e40f}</Project>
-      <Name>Model</Name>
-    </ProjectReference>
     <ProjectReference Include="..\SqlMaker\SqlMaker.csproj">
       <Project>{d8035cf0-ed1a-44b5-a63e-5225429bc53d}</Project>
       <Name>SqlMaker</Name>

@@ -1,5 +1,5 @@
-﻿
-namespace Model
+﻿using SqlMaker.Common;
+namespace Lor
 {
     //本实例演示自定义查询的映射
     [DboProjection("(SELECT USERMODEL.*,PWDMODEL.PASSWORD FROM USERMODEL LEFT JOIN PWDMODEL ON USERMODEL.CODE = PWDMODEL.USRCODE)", true)]

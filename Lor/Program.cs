@@ -1,6 +1,6 @@
 ﻿using System;
 using SqlMaker;
-using Model;
+using SqlMaker.Common;
 using System.Collections.Generic;
 
 namespace Lor

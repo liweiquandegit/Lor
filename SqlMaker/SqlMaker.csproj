@@ -41,6 +41,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Common\Attr.cs" />
+    <Compile Include="Common\BaseModel.cs" />
+    <Compile Include="Common\Variables.cs" />
     <Compile Include="Limit.cs" />
     <Compile Include="MsSqlMaker.cs" />
     <Compile Include="OraSqlMaker.cs" />
@@ -49,16 +52,6 @@
     <Compile Include="SqlMaker.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlProvider.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Common\Common.csproj">
-      <Project>{6efeab19-6877-479f-acb9-17b5c5c49752}</Project>
-      <Name>Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Model\Model.csproj">
-      <Project>{a74f1a4e-e624-42d9-8a7f-5f2851a7e40f}</Project>
-      <Name>Model</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

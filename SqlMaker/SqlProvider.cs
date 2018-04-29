@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Data.Common;
-using Model;
-using Common;
+using SqlMaker.Common;
 using System.Collections;
 using System.Threading;
 using System.Collections.Generic;

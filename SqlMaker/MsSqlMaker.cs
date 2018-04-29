@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Model;
+using SqlMaker.Common;
 using System.Data.SqlClient;
 using System.Reflection;
 
