@@ -89,6 +89,7 @@ namespace SqlMaker
         public static void CloseTransaction(string key, bool commit)
         {
             DbTransaction tran = GetTransaction(key);
+            DbConnection conn = tran.Connection;
             if (tran == null)
             {
                 return;
@@ -96,13 +97,21 @@ namespace SqlMaker
             try
             {
                 if (commit)
+                {
                     tran.Commit();
+                }
                 else
                     tran.Rollback();
+
                 tranPool.Remove(key);
             }
             catch (Exception ex)
             {
+
+            }
+            finally
+            {
+                conn.Close();
             }
         }
         /// <summary>
