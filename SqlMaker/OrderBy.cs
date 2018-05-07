@@ -1,10 +1,30 @@
-﻿namespace SqlMaker
+﻿using System.Collections.Generic;
+using System.Reflection;
+using System;
+using SqlMaker.Common;
+
+namespace SqlMaker
 {
     /// <summary>
     /// 排序信息
     /// </summary>
     public class OrderBy
     {
+        public static IList<OrderBy> GetDefaultOrderBy<T>()
+        {
+            
+            Type typ = typeof(T);
+            
+            foreach(PropertyInfo prop in typ.GetProperties())
+            {
+                if(prop.GetCustomAttribute<PrimaryKeyAttribute>()!=null)
+                {
+                    return new List<OrderBy>() { new OrderBy() { field = prop.Name } };
+                }
+            }
+            throw new KeyNotFoundException();
+        }
+
         private string field;
         private bool asc;
         public OrderBy()

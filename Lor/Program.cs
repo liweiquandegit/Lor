@@ -11,7 +11,7 @@ namespace Lor
         {
             string message = "";
             //写入数据对象并提交
-            for (int i = 0; i < 100000; i++)
+            for (int i = 0; i < 1000000; i++)
             {
                 Random random = new Random(i);
                 string id = (random.NextDouble()*10000000).ToString();
@@ -22,8 +22,8 @@ namespace Lor
                 }
                 bool b= SqlProvider.GetDbInstance<UserModel>().Insert(new UserModel() { Id = id, Code = "75125", Creator = "Liwq", Flag = 1, Name = "Liweiquan" }, tran, out message);
                 SqlProvider.CloseTransaction(tran, b);
-                if (b)
-                    Console.WriteLine(i);
+                if (b) { }
+                //  Console.WriteLine(i);
                 else
                     Console.WriteLine(message);
             }
