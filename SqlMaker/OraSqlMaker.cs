@@ -70,7 +70,6 @@ namespace SqlMaker
         }
         protected override bool _Insert(T data, string tran, out string message)
         {
-
             DboProjectionAttribute tnAttr = typeof(T).GetCustomAttribute<DboProjectionAttribute>();
             if (tnAttr == null || String.IsNullOrWhiteSpace(tnAttr.Projection))
             {

@@ -82,6 +82,7 @@ namespace SqlMaker
                 throw new NotSupportedException();
             return _Insert(data, tran, out message);
         }
+        
         protected abstract bool _Update(T data, string tran, out string message);
         protected abstract bool _Delete(T data, string tran, out string message);
         protected abstract bool _Insert(T data, string tran, out string message);

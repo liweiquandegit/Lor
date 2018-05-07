@@ -14,14 +14,14 @@ namespace Lor
             UserUpdater userUpdater = new UserUpdater(userFetcher);
             //写入数据对象并提交
             DateTime dt = DateTime.Now;
-            for (int i = 0; i < 1000; i++)
+            for (int i = 0; i < 10000; i++)
             {
                 Random random = new Random(i);
                 string id = (random.Next(0,10000)).ToString();
                 string tran = SqlProvider.CreateTransaction();
                 UserModel model = userFetcher.GetById(tran,id);
                 if (model == null)
-                    model = new UserModel() {/* Code = "liwq_" + id, Name = "liweiquan_" + id,*/ Id = id };
+                    model = new UserModel() { Code = "liwq_" + id, Name = "liweiquan_" + id, Id = id };
                 else
                     model.Code = "llwwwqqq";
                 bool result = userUpdater.Save(tran,model,out message);
