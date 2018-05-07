@@ -6,7 +6,7 @@ using System.Collections.Generic;
 
 namespace SqlMaker
 {
-    public abstract class DataFetcher<T> where T: BaseModel,new()
+    public class DataFetcher<T> where T: BaseModel,new()
     {
         public DataFetcher()
         {
@@ -14,7 +14,10 @@ namespace SqlMaker
         }
 
         SqlMaker<T> sqlMaker;
-        protected abstract SqlMaker<T> InitSqlMaker();
+        protected virtual SqlMaker<T> InitSqlMaker()
+        {
+            return new OraSqlMaker<T>();
+        }
         public virtual T GetById(string tran,object id)
         {
             string message = "";
@@ -37,6 +40,13 @@ namespace SqlMaker
                 return dataSet.First();
             else
                 return null;
+        }
+        public virtual IList<T> List(string tran)
+        {
+            string message = "";
+            Type typ = typeof(T);
+            IList<T> dataSet = sqlMaker.Select(tran, OrderBy.GetDefaultOrderBy<T>(), new Limit(), out message);
+            return dataSet;
         }
     }
 }

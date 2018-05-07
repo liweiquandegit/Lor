@@ -9,6 +9,7 @@ namespace Lor
     {
         static void Main(string[] args)
         {
+            IList<UserWithPwdModel> pwd = new DataFetcher<UserWithPwdModel>().List(SqlProvider.CreateTransaction());
             string message = "";
             UserFetcher userFetcher = new UserFetcher();
             UserUpdater userUpdater = new UserUpdater(userFetcher);

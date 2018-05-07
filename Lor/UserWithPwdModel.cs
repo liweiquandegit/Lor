@@ -2,7 +2,7 @@
 namespace Lor
 {
     //本实例演示自定义查询的映射
-    [DboProjection("(SELECT USERMODEL.*,PWDMODEL.PASSWORD FROM USERMODEL LEFT JOIN PWDMODEL ON USERMODEL.CODE = PWDMODEL.USRCODE)", true)]
+    [DboProjection("(SELECT USERMODEL.*,PWDMODEL.PASSWORD FROM USERMODEL LEFT JOIN PWDMODEL ON USERMODEL.CODE = PWDMODEL.USRCODE WHERE 1=1)", true)]
     public class UserWithPwdModel : BaseModel
     {
         //protected string _Code;
