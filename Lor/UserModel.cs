@@ -1,9 +1,10 @@
 ﻿using SqlMaker.Common;
-
+using System;
 namespace Lor
 {
     //本实例演示一般表的映射
     [DboProjection("USERMODEL")]
+    [Serializable]
     public class UserModel:BaseModel
     {
         protected string _Code;

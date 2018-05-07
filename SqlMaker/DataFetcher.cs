@@ -8,8 +8,13 @@ namespace SqlMaker
 {
     public abstract class DataFetcher<T> where T: BaseModel,new()
     {
+        public DataFetcher()
+        {
+            sqlMaker = InitSqlMaker();
+        }
+
         SqlMaker<T> sqlMaker;
-        protected abstract void InitSqlMaker();
+        protected abstract SqlMaker<T> InitSqlMaker();
         public virtual T GetById(string tran,object id)
         {
             string message = "";

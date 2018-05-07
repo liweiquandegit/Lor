@@ -119,7 +119,7 @@ namespace SqlMaker
         /// </summary>
         /// <typeparam name="T">对象的类型</typeparam>
         /// <returns>数据库操作实例</returns>
-        public static SqlMaker<T> GetDbInstance<T>() where T : BaseModel, new()
+        /*public static SqlMaker<T> GetDbInstance<T>() where T : BaseModel, new()
         {
             switch (Variables.DbType)
             {
@@ -131,7 +131,7 @@ namespace SqlMaker
                     return new OraSqlMaker<T>();
             }
 
-        }
+        }*/
         static object locker = new object();
         private static void KillTransaction(object arg)
         {

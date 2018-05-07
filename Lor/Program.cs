@@ -10,23 +10,30 @@ namespace Lor
         static void Main(string[] args)
         {
             string message = "";
+            UserFetcher userFetcher = new UserFetcher();
+            UserUpdater userUpdater = new UserUpdater(userFetcher);
             //写入数据对象并提交
-            for (int i = 0; i < 1000000; i++)
+            DateTime dt = DateTime.Now;
+            for (int i = 0; i < 1000; i++)
             {
                 Random random = new Random(i);
-                string id = (random.NextDouble()*10000000).ToString();
+                string id = (random.Next(0,10000)).ToString();
                 string tran = SqlProvider.CreateTransaction();
-                if(tran=="")
-                {
-
-                }
-                bool b= SqlProvider.GetDbInstance<UserModel>().Insert(new UserModel() { Id = id, Code = "75125", Creator = "Liwq", Flag = 1, Name = "Liweiquan" }, tran, out message);
-                SqlProvider.CloseTransaction(tran, b);
-                if (b) { }
+                UserModel model = userFetcher.GetById(tran,id);
+                if (model == null)
+                    model = new UserModel() {/* Code = "liwq_" + id, Name = "liweiquan_" + id,*/ Id = id };
+                else
+                    model.Code = "llwwwqqq";
+                bool result = userUpdater.Save(tran,model,out message);
+                SqlProvider.CloseTransaction(tran, result);
+                if (result) { }
                 //  Console.WriteLine(i);
                 else
                     Console.WriteLine(message);
             }
+            Console.WriteLine((DateTime.Now - dt).TotalMilliseconds);
+            Console.Write("done");
+            Console.Read();
             //在新的事务中，更改数据，将数据合并到持久化对象中，最后保存提交事务
 
             //tran = SqlProvider.CreateTransaction();

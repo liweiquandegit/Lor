@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace SqlMaker
 {
-    internal class MsSqlMaker<T> : SqlMaker<T> where T : BaseModel, new()
+    public class MsSqlMaker<T> : SqlMaker<T> where T : BaseModel, new()
     {
         protected override bool _Delete(T data, string tran, out string message)
         {
