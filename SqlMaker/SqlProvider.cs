@@ -22,18 +22,18 @@ namespace SqlMaker
         /// 获得数据连接实例
         /// </summary>
         /// <returns>数据连接实例</returns>
-        public static DbConnection GetConnection()
+        public static DbConnection GetConnection<T>() where T:BaseModel,new()
         {
             DbConnection connection;
-            switch (Variables.DbType)
+            switch (Helper.GetDBType<T>())
             {
                 default:
                     connection = new SqlConnection();
                     break;
-                case 0:
+                case  DBType.MsSql:
                     connection = new SqlConnection();
                     break;
-                case 1:
+                case DBType.Oracle:
                     connection = new OracleConnection();
                     break;
             }
@@ -44,9 +44,9 @@ namespace SqlMaker
         /// 创建事务
         /// </summary>
         /// <returns>事务号</returns>
-        public static string CreateTransaction()
+        public static string CreateTransaction<T>()where T:BaseModel,new()
         {
-            DbConnection connection = GetConnection();
+            DbConnection connection = GetConnection<T>();
             DbTransaction tran = null;
             string key = "";
             try

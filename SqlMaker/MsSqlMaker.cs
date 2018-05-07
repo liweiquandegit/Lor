@@ -186,7 +186,7 @@ namespace SqlMaker
                 sqlTran = (SqlTransaction)SqlProvider.GetTransaction(tran);
             else
             {
-                tran = SqlProvider.CreateTransaction();
+                tran = SqlProvider.CreateTransaction<T>();
                 sqlTran = (SqlTransaction)SqlProvider.GetTransaction(tran);
             }
             if(sqlTran==null&&runInTran)

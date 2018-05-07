@@ -9,7 +9,7 @@ namespace SqlMaker
         public DataUpdater(DataFetcher<T> dataFetcher)
         {
             this.dataFetcher = dataFetcher;
-            sqlMaker = InitSqlMaker();
+            sqlMaker = Helper.GetSqlDbInstance<T>();
         }
         SqlMaker<T> sqlMaker;
         
@@ -17,7 +17,6 @@ namespace SqlMaker
         public event DataUpdatedHandler<T> DataDeleted;
         public event DataUpdatingHandler<T> DataUpdating;
         public event DataUpdatingHandler<T> DataDeleting;
-        protected abstract SqlMaker<T> InitSqlMaker();
         private DataFetcher<T> dataFetcher;
         public bool Save(string tran,T data,out string message)
         {

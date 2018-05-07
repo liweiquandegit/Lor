@@ -9,7 +9,7 @@ namespace Lor
     {
         static void Main(string[] args)
         {
-            IList<UserWithPwdModel> pwd = new DataFetcher<UserWithPwdModel>().List(SqlProvider.CreateTransaction());
+            IList<UserWithPwdModel> pwd = new DataFetcher<UserWithPwdModel>().List(SqlProvider.CreateTransaction<UserWithPwdModel>());
             string message = "";
             UserFetcher userFetcher = new UserFetcher();
             UserUpdater userUpdater = new UserUpdater(userFetcher);
@@ -19,7 +19,7 @@ namespace Lor
             {
                 Random random = new Random(i);
                 string id = (random.Next(0,10000)).ToString();
-                string tran = SqlProvider.CreateTransaction();
+                string tran = SqlProvider.CreateTransaction<UserModel>();
                 UserModel model = userFetcher.GetById(tran,id);
                 if (model == null)
                     model = new UserModel() { Code = "liwq_" + id, Name = "liweiquan_" + id, Id = id };

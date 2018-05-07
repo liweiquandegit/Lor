@@ -43,6 +43,8 @@
   <ItemGroup>
     <Compile Include="Common\Attr.cs" />
     <Compile Include="Common\BaseModel.cs" />
+    <Compile Include="Common\Define.cs" />
+    <Compile Include="Common\Helper.cs" />
     <Compile Include="Common\LorEventArg.cs" />
     <Compile Include="Common\LorHandler.cs" />
     <Compile Include="Common\Variables.cs" />

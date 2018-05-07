@@ -10,14 +10,10 @@ namespace SqlMaker
     {
         public DataFetcher()
         {
-            sqlMaker = InitSqlMaker();
+            sqlMaker = Helper.GetSqlDbInstance<T>();
         }
 
         SqlMaker<T> sqlMaker;
-        protected virtual SqlMaker<T> InitSqlMaker()
-        {
-            return new OraSqlMaker<T>();
-        }
         public virtual T GetById(string tran,object id)
         {
             string message = "";

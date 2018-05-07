@@ -3,7 +3,7 @@ using System;
 namespace Lor
 {
     //本实例演示一般表的映射
-    [DboProjection("USERMODEL")]
+    [DboProjection("USERMODEL",DBType.Oracle)]
     [Serializable]
     public class UserModel:BaseModel
     {

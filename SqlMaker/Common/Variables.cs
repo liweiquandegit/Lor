@@ -16,9 +16,5 @@ namespace SqlMaker.Common
         /// 数据连接字符串，程序启动时赋值到此
         /// </summary>
         public static string ConnStr = "DATA SOURCE=127.0.0.1:1521/xe;PASSWORD=master;USER ID=system";
-        /// <summary>
-        /// 运行的数据库版本，程序启动时赋值到此
-        /// </summary>
-        public static int DbType = 1;
     }
 }

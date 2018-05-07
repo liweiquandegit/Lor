@@ -15,12 +15,14 @@ namespace SqlMaker.Common
         /// 映射对象是否支持写操作（表=True，非表=False）
         /// </summary>
         public bool Readonly { get; private set; }
-        public DboProjectionAttribute(string name,bool readOnly = false)
+        public DBType DBtype { get; private set; }
+        public DboProjectionAttribute(string name,DBType dbType, bool readOnly = false)
         {
             
             //这里可以是普通的表名，也可以是连接表名（写法是(select * from a left join b on a.aid = b.bid)）
             this.Projection = name;
             this.Readonly = readOnly;
+            this.DBtype = dbType;
         }
     }
     public class NotColumnAttribute : Attribute
