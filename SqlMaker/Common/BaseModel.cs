@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Reflection;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Collections.Generic;
 
 namespace SqlMaker.Common
 {
+    [Serializable]
     public abstract class BaseModel
     {
         protected string _Id { get; set; }
@@ -107,6 +110,14 @@ namespace SqlMaker.Common
             //    PropertyInfo property = typeof(T).GetProperty(s);
             //    property.SetValue(this, property.GetValue(swap));
             //}
+        }
+        public virtual Object Clone()
+        {
+            MemoryStream stream = new MemoryStream();
+            BinaryFormatter formater = new BinaryFormatter();
+            formater.Serialize(stream,this);
+            stream.Seek(0, SeekOrigin.Begin);
+            return formater.Deserialize(stream);
         }
     }
 }

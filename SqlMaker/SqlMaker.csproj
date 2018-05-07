@@ -43,7 +43,11 @@
   <ItemGroup>
     <Compile Include="Common\Attr.cs" />
     <Compile Include="Common\BaseModel.cs" />
+    <Compile Include="Common\LorEventArg.cs" />
+    <Compile Include="Common\LorHandler.cs" />
     <Compile Include="Common\Variables.cs" />
+    <Compile Include="DataFetcher.cs" />
+    <Compile Include="DataUpdater.cs" />
     <Compile Include="Limit.cs" />
     <Compile Include="MsSqlMaker.cs" />
     <Compile Include="OraSqlMaker.cs" />
@@ -53,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlProvider.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
